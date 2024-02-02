@@ -29,7 +29,7 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setIsLoading(false);
-      router.push("dashboard/index.js");
+      router.push("/dashboard");
       return;
     } catch (error: any) {
       console.log(error);
@@ -89,7 +89,6 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
           </Button>
         </div>
       </form>
-     
     </div>
   );
 }
