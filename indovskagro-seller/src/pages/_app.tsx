@@ -1,3 +1,4 @@
+import React from "react";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { cn } from "@/lib/utils";
@@ -9,14 +10,29 @@ export const fontSans = FontSans({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <div
-      className={cn(
-        "min-h-screen bg-background font-sans antialiased",
-        fontSans.variable
-      )}
-    >
-      <Component {...pageProps} />
-    </div>
-  );
+  React.useEffect(() => {
+    // set fontSans variable on body element
+    // add "min-h-screen bg-background font-sans antialiased"
+    // to body element
+
+    const body = document.querySelector("body");
+    if (!body) return;
+
+    body.className += ` ${cn(
+      "min-h-screen bg-background font-sans antialiased",
+      fontSans.variable
+    )}`;
+
+    return () => {
+      body.className = body.className.replace(
+        ` ${cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable
+        )}`,
+        ""
+      );
+    };
+  }, []);
+
+  return <Component {...pageProps} />;
 }
