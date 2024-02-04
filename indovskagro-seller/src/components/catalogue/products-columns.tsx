@@ -93,12 +93,12 @@ export function getColumns(
                   let response = await fetch(product.image);
                   let data = await response.blob();
 
+                  const contentType = response.headers.get("content-type");
                   // remove everything after `?` in the image URL
                   // then split the string by `.` and get the last element
-                  const extension = product.image
-                    .split("?")[0]
-                    .split(".")
-                    .pop();
+                  let extension = product.image.split("?")[0].split(".").pop();
+
+                  if (contentType) extension = contentType.split("/")[1];
 
                   let metadata = {
                     type: `image/${extension}`,
