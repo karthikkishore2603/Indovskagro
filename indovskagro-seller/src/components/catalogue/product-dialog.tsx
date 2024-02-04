@@ -85,7 +85,10 @@ function ProductForm({
       mrp: defaultValues?.mrp || 0,
       price: defaultValues?.price || 0,
       stock: defaultValues?.stock || 0,
-      image: defaultValues?.image || new File([], ""),
+      image:
+        typeof defaultValues?.image === "string"
+          ? undefined
+          : defaultValues?.image || undefined,
     },
   });
 
