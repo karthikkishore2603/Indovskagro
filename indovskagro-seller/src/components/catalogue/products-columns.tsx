@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,16 +21,50 @@ export function getColumns(
   return [
     {
       accessorKey: "title",
-      header: "Title",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Title
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
     },
     { accessorKey: "description", header: "Description" },
     {
       accessorKey: "stock",
-      header: "Stock",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Stock
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
     },
     {
       accessorKey: "mrp",
-      header: () => <div className="text-right">MRP</div>,
+      header: ({ column }) => {
+        return (
+          <div className="flex items-center justify-end">
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              MRP
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        );
+      },
       cell: ({ row }) => {
         const amount = parseFloat(row.getValue("mrp"));
         const formatted = new Intl.NumberFormat("en-IN", {
@@ -43,7 +77,21 @@ export function getColumns(
     },
     {
       accessorKey: "price",
-      header: () => <div className="text-right">Price</div>,
+      header: ({ column }) => {
+        return (
+          <div className="flex items-center justify-end">
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              Price
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        );
+      },
       cell: ({ row }) => {
         const amount = parseFloat(row.getValue("price"));
         const formatted = new Intl.NumberFormat("en-IN", {
