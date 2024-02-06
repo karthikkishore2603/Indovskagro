@@ -6,6 +6,7 @@ type Product = {
   price: number;
   stock: number;
   image: File | string;
+  category: string;
 };
 
 export type { Product };

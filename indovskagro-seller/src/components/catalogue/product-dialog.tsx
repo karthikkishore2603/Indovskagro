@@ -19,8 +19,14 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -60,6 +66,9 @@ const ProductFormSchema = z.object({
   image: z.instanceof(File, {
     message: "Image is required.",
   }),
+  category: z.string().min(1, {
+    message: "Category is required.",
+  }),
 });
 
 function ProductForm({
@@ -85,6 +94,7 @@ function ProductForm({
       mrp: defaultValues?.mrp || 0,
       price: defaultValues?.price || 0,
       stock: defaultValues?.stock || 0,
+      category: defaultValues?.category || "",
       image:
         typeof defaultValues?.image === "string"
           ? undefined
@@ -162,6 +172,31 @@ function ProductForm({
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
+                <FormLabel>Category</FormLabel>
+
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl className="w-full">
+                    <SelectTrigger className="col-span-3">
+                      <SelectValue placeholder="Select the product's category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Oil">Oil</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
