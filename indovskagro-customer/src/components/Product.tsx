@@ -18,7 +18,7 @@ export function ProductComponent({ product }: { product: Product }) {
             left: "10px",
           }}
         >
-          Fruits
+          {product.category}
         </div>
         <div className="p-4 border border-secondary border-top-0 rounded-bottom">
           <h4>{product.title}</h4>
@@ -38,11 +38,10 @@ export function ProductComponent({ product }: { product: Product }) {
               })(product.price.toString())}
             </p>
             <a
-              href="#"
+              href={`/product/index.html?id=${product.id}`}
               className="btn border border-secondary rounded-pill px-3 text-primary"
             >
-              <i className="fa fa-shopping-bag me-2 text-primary"></i> Add to
-              cart
+              <i className="fa fa-shopping-bag me-2 text-primary"></i> Buy
             </a>
           </div>
         </div>
