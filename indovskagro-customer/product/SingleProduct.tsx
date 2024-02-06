@@ -13,6 +13,9 @@ export function SingleProduct() {
     const id = url.searchParams.get("id");
     if (id) {
       setProductId(id);
+    } else {
+      // redirect to home page
+      window.location.href = "/";
     }
   }, []);
 
