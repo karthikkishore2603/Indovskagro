@@ -195,6 +195,7 @@ function ProductForm({
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="Oil">Oil</SelectItem>
+                    <SelectItem value="Fruits">Fruits</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
