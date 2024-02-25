@@ -1,17 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import CssBaseline from "@mui/material/CssBaseline";
-import { SingleProduct } from "./SingleProduct.js";
+import NavbarCollapse from "./NavbarCollapse";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
-ReactDOM.createRoot(document.getElementById("single-product-div")!).render(
+ReactDOM.createRoot(document.getElementById("navbar-cart")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <CssBaseline />
-      <SingleProduct />
+      <NavbarCollapse />
     </QueryClientProvider>
   </React.StrictMode>
 );
