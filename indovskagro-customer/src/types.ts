@@ -9,4 +9,13 @@ type Product = {
   category: string;
 };
 
-export type { Product };
+type User = {
+  fname: string;
+  lname: string;
+  email: string;
+  phoneNo: string;
+  address: string;
+  authId: string;
+};
+
+export type { Product, User };
