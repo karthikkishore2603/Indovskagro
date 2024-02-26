@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "./index";
 
@@ -27,4 +28,16 @@ export async function sendVerificationEmail() {
     throw new Error("User not found");
   }
   return sendEmailVerification(auth.currentUser);
+}
+
+export async function logout() {
+  return auth.signOut();
+}
+
+export async function loginWithEmailAndPassword(
+  email: string,
+  password: string
+) {
+  const res = await signInWithEmailAndPassword(auth, email, password);
+  return res.user;
 }
