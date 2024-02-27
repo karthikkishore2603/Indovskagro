@@ -6,6 +6,7 @@ import { Inter as FontSans } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/context/auth-context";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -42,7 +43,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </QueryClientProvider>
       <Toaster />
     </>
