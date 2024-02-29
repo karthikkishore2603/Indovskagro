@@ -1,39 +1,168 @@
 import React from "react";
 
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebase";
+
+import Popover from "@mui/material/Popover";
+import { Button } from "@mui/material";
+import { logout } from "./firebase/auth";
+
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import IconButton from "@mui/material/IconButton";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
+import { OrderConfirmForm } from "../cart/cart";
+import { styled } from "@mui/material/styles";
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: "flex-start",
+}));
+
+export function BasicPopover() {
+  const [user, loading, error] = useAuthState(auth);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLAnchorElement | null>(
+    null
+  );
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  if (loading) {
+    return <div></div>;
+  }
+
+  if (error) {
+    return <div></div>;
+  }
+
+  return (
+    <div>
+      <a
+        aria-describedby={id}
+        onClick={(e) => {
+          if (user) {
+            e.preventDefault();
+            setAnchorEl(e.currentTarget);
+          } else {
+          }
+        }}
+        href="/login/index.html"
+      >
+        <i className="fas fa-user fa-2x"></i>
+      </a>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <Button sx={{ p: 2 }}>My Account</Button>
+        <br></br>
+        <Button
+          sx={{ p: 2 }}
+          onClick={async () => {
+            await logout();
+            handleClose();
+          }}
+        >
+          Signout
+        </Button>
+      </Popover>
+    </div>
+  );
+}
+
+export function LoginIcon() {
+  return (
+    <>
+      <BasicPopover />
+    </>
+  );
+}
+
+export function Cart() {
+  
+
+  const [openConfirmOrder, setOpenConfirmOrder] = React.useState(false);
+  const handleDrawerClose = () => {
+    setOpenConfirmOrder(false);
+  };
+
+  const handleDrawerOpen = () => {
+    setOpenConfirmOrder(true);
+  };
+
+  return (
+    <>
+      <div>
+        <a
+          className="position-relative me-4 my-auto "
+          
+          onClick={(e) => {
+            setOpenConfirmOrder(true);
+          }}
+        >
+          <i className="fa fa-shopping-bag fa-2x"></i>
+        </a>
+
+        <SwipeableDrawer
+          anchor="right"
+          open={openConfirmOrder}
+          onClose={handleDrawerClose}
+          onOpen={handleDrawerOpen}
+        >
+          <Box
+            sx={{
+              width: {
+                xs: "100vw",
+                sm: "80vw",
+                lg: "35vw",
+              },
+            }}
+          >
+            <DrawerHeader>
+              <IconButton onClick={handleDrawerClose}>
+                <ChevronRightIcon />
+              </IconButton>
+            </DrawerHeader>
+            <Divider />
+            <OrderConfirmForm />
+          </Box>
+        </SwipeableDrawer>
+      </div>
+    </>
+  );
+}
 export default function NavbarCollapse() {
-    const [openLogin, setOpenLogin] = React.useState(false);
+  const [openLogin, setOpenLogin] = React.useState(false);
 
-    const handleClickOpenLogin = () => {
-        setOpenLogin(true);
-      };
-    
-      const handleCloseLogin = () => {
-        setOpenLogin(false);
-      };
+  const handleClickOpenLogin = () => {
+    setOpenLogin(true);
+  };
 
-      
-
+  const handleCloseLogin = () => {
+    setOpenLogin(false);
+  };
 
   return (
     <>
       <div className="d-flex m-3 me-0">
-        <a href="#" className="position-relative me-4 my-auto">
-          <i className="fa fa-shopping-bag fa-2x"></i>
-          <span
-            className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-            style={{
-              top: "-5px",
-              left: "15px",
-              height: "20px",
-              minWidth: "20px",
-            }}
-          >
-            3
-          </span>
-        </a>
-        <a href={'login/index.html'} >
-          <i className="fas fa-user fa-2x"></i>
-        </a>
+        <Cart />
+        <LoginIcon />
       </div>
     </>
   );

@@ -41,7 +41,7 @@ export function ProductComponent({ product }: { product: Product }) {
               href={`/product/index.html?id=${product.id}`}
               className="btn border border-secondary rounded-pill px-3 text-primary"
             >
-              <i className="fa fa-shopping-bag me-2 text-primary"></i> Buy
+              <i className="fa fa-shopping-bag me-2 text-primary"></i> Add to Cart
             </a>
           </div>
         </div>
