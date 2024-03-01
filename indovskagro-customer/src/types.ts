@@ -18,4 +18,11 @@ type User = {
   authId: string;
 };
 
-export type { Product, User };
+type Cart = {
+  userId: string;
+  productId: string;
+  quantity: number;
+  product?: Product;
+}
+
+export type { Product, User, Cart };

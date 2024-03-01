@@ -273,8 +273,29 @@ function ProductForm({
                       if (e.target.files && e.target.files[0])
                         field.onChange(e.target.files[0]);
                     }}
+                    accept="image/*"/>
+                  {/* <input
+                    type="file"
+                    className={"col-span-3"}
+                    {...field}
+                    // value={""}
+                    value={undefined}
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        const file = e.target.files[0];
+                        const img = new Image();
+                        img.src = URL.createObjectURL(file);
+                        img.onload = () => {
+                          if (img.width >= 520 && img.height >= 520) {
+                            field.onChange(file);
+                          } else {
+                            alert("Please select an image with size 100px * 100px");
+                          }
+                        };
+                      }
+                    }}
                     accept="image/*"
-                  />
+                  /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>

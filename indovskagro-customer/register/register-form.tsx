@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  logout,
   registerWithEmailAndPassword,
   sendVerificationEmail,
 } from "../src/firebase/auth";
@@ -182,6 +183,8 @@ export function RegisterForm() {
 
       // send verification code
       await sendVerificationEmail();
+
+      await logout();
 
       setStepNo(1);
     } catch (error: any) {

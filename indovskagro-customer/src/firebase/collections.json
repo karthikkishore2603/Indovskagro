@@ -1,5 +1,6 @@
 {
     "products": "PRODUCTS",
     "productImageFolder": "product-images",
-    "users": "USERS"
+    "users": "USERS",
+    "cart": "CART"
 }

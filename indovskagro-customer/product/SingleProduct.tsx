@@ -7,12 +7,16 @@ import { getProductById } from "../src/firebase/products";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import IconButton from "@mui/material/IconButton";
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Divider from "@mui/material/Divider";
 
 import { styled } from "@mui/material/styles";
 
 import { OrderConfirmForm } from "./OrderConfirmForm";
+
+import { auth } from "../src/firebase";
+import { getCartItems } from "../src/firebase/cart";
+import { addToCart } from "../src/firebase/cart";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -25,7 +29,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export function SingleProduct() {
   const [productId, setProductId] = React.useState<string>("");
-
+  const user = auth.currentUser;
   const [quantity, setQuantity] = React.useState<number>(0);
   const [openConfirmOrder, setOpenConfirmOrder] = React.useState(false);
 
@@ -86,20 +90,28 @@ export function SingleProduct() {
               </p>
               <p>{data.description}</p>
               <div className="single-product-form">
-                <div>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={quantity}
-                    onChange={(e) => {
-                      setQuantity(parseInt(e.target.value));
-                    }}
-                  />
-                </div>
                 <a
                   className="cart-btn"
-                  onClick={() => {
-                    setOpenConfirmOrder(true);
+                  // onClick={() => {
+                  //   setOpenConfirmOrder(true);
+                  // }}
+
+                  onClick={async () => {
+                    console.log(productId);
+                    console.log(auth.currentUser?.uid);
+
+                    await getCartItems(auth.currentUser?.uid!);
+                    const cartItems = await getCartItems(
+                      auth.currentUser?.uid!
+                    );
+                    if (
+                      cartItems.some((item) => item.productId === productId)
+                    ) {
+                      console.log("Already in to cart");
+                    } else {
+                      await addToCart(user?.uid!, productId!, 1);
+                      console.log("Added to cart");
+                    }
                   }}
                 >
                   <i className="fas fa-shopping-cart"></i> Buy

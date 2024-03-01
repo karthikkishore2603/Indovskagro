@@ -14,39 +14,49 @@ import IconButton from "@mui/material/IconButton";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useTheme } from "@mui/material/styles";
 
-export function MediaControlCard() {
+import { addToCart } from "../src/firebase/cart";
+import { getCartItems } from "../src/firebase/cart";
+import { removeCartItem } from "../src/firebase/cart";
+
+import { Cart, Product } from "../src/types";
+
+export function MediaControlCard({ cart }: { cart: Cart }) {
   const theme = useTheme();
-  const [value, setValue] = React.useState<number>(30);
+  const [value, setValue] = React.useState<number>(cart.quantity);
+  const product = cart.product;
+
+  if (!product) return;
 
   return (
-    <Card sx={{ display: "flex" }}>
+    <Card sx={{ display: "flex", marginBottom: "20px" }}>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: "200px",
+          width: {
+            xs: "50vw",
+            sm: "45vw",
+            lg: "20vw",
+          },
         }}
       >
         <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography component="div" variant="h5">
-            OIL
+            {product.title}
           </Typography>
           <Typography
             variant="subtitle1"
             color="text.secondary"
             component="div"
           >
-            Mac Miller
+            {product.description}
           </Typography>
         </CardContent>
         <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
           <IconButton
-        
             onClick={() => {
               setValue(value - 1);
             }}
@@ -63,12 +73,21 @@ export function MediaControlCard() {
           >
             <AddBoxIcon />
           </IconButton>
+
+          <IconButton 
+          onClick={() => {
+            removeCartItem(cart.userId, cart.productId);
+          }}>
+            <DeleteIcon />
+          </IconButton>
+
+
         </Box>
       </Box>
       <CardMedia
         component="img"
         sx={{ width: 151 }}
-        image="https://ik.imagekit.io/Karthik2612/v0/b/indovskagro.appspot.com/o/product-images%2Fffbf3350-622e-4cb5-a8ec-3bbcf32de35d-oil.jpg?alt=media&token=d8a12d77-f887-4eca-b59d-fa5696cacfb8"
+        image={product.image}
         alt="Live from space album cover"
       />
     </Card>
@@ -80,6 +99,7 @@ export const OrderConfirmForm = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLAnchorElement | null>(
     null
   );
+  const [cartItems, setCartItems] = React.useState<Cart[]>([]);
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -87,6 +107,19 @@ export const OrderConfirmForm = () => {
   const [stage, setStage] = React.useState<"phone" | "otp" | "address">(
     "phone"
   );
+
+  React.useEffect(() => {
+    const a = async () => {
+      if (user) {
+        console.log("cart display");
+        const items = await getCartItems(user.uid);
+        setCartItems(items);
+        console.log("display");
+      }
+    };
+    a();
+  }, [user]);
+
   return (
     <Box
       sx={{
@@ -146,7 +179,9 @@ export const OrderConfirmForm = () => {
                   setStage("otp");
                 }}
               >
-                <MediaControlCard />
+                {cartItems.map((cart) => {
+                  return <MediaControlCard cart={cart} />;
+                })}
 
                 <TextFieldElement
                   name="otp"
