@@ -22,6 +22,7 @@ import { getCartItems } from "../src/firebase/cart";
 import { removeCartItem } from "../src/firebase/cart";
 
 import { Cart, Product } from "../src/types";
+import { HdrOffSelect } from "@mui/icons-material";
 
 export function MediaControlCard({ cart }: { cart: Cart }) {
   const theme = useTheme();
@@ -31,6 +32,8 @@ export function MediaControlCard({ cart }: { cart: Cart }) {
   if (!product) return;
 
   return (
+    <>
+    
     <Card sx={{ display: "flex", marginBottom: "20px" }}>
       <Box
         sx={{
@@ -42,7 +45,7 @@ export function MediaControlCard({ cart }: { cart: Cart }) {
             lg: "20vw",
           },
         }}
-      >
+      ><a href={`/product/index.html?id=${product.id}`}>
         <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography component="div" variant="h5">
             {product.title}
@@ -55,8 +58,9 @@ export function MediaControlCard({ cart }: { cart: Cart }) {
             {product.description}
           </Typography>
         </CardContent>
+        </a>
         <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-          <IconButton
+          {/* <IconButton
             onClick={() => {
               setValue(value - 1);
             }}
@@ -72,29 +76,31 @@ export function MediaControlCard({ cart }: { cart: Cart }) {
             }}
           >
             <AddBoxIcon />
-          </IconButton>
+          </IconButton> */}
 
-          <IconButton 
-          onClick={() => {
-            removeCartItem(cart.userId, cart.productId);
-          }}>
+          <IconButton
+            onClick={() => {
+              removeCartItem(cart.userId, cart.productId);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
-
-
         </Box>
       </Box>
+      <a href={`/product/index.html?id=${product.id}`}>
       <CardMedia
         component="img"
         sx={{ width: 151 }}
         image={product.image}
         alt="Live from space album cover"
-      />
+      /></a>
     </Card>
+    
+    </>
   );
 }
 
-export const OrderConfirmForm = () => {
+export const CartDisplay = () => {
   const [user, loading, error] = useAuthState(auth);
   const [anchorEl, setAnchorEl] = React.useState<HTMLAnchorElement | null>(
     null
@@ -183,23 +189,6 @@ export const OrderConfirmForm = () => {
                   return <MediaControlCard cart={cart} />;
                 })}
 
-                <TextFieldElement
-                  name="otp"
-                  label="OTP"
-                  required
-                  fullWidth
-                  sx={{
-                    paddingBottom: "1rem",
-                  }}
-                  validation={{
-                    required: "OTP is required",
-                    pattern: {
-                      value: /^[0-9]{5}$/,
-                      message: "Invalid OTP",
-                    },
-                  }}
-                />
-
                 <Button
                   type="submit"
                   variant="contained"
@@ -207,8 +196,12 @@ export const OrderConfirmForm = () => {
                   sx={{
                     ml: 1,
                   }}
+                  onClick={() => {
+                    window.location.href = "/checkout/index.html";
+                  }
+                }
                 >
-                  Confirm Order
+                  Check Out
                 </Button>
               </FormContainer>
             </>

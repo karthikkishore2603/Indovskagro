@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
-import { OrderConfirmForm } from "../cart/cart";
+import { CartDisplay } from "../cart/cart";
 import { styled } from "@mui/material/styles";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -140,7 +140,7 @@ export function Cart() {
               </IconButton>
             </DrawerHeader>
             <Divider />
-            <OrderConfirmForm />
+            <CartDisplay />
           </Box>
         </SwipeableDrawer>
       </div>

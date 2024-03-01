@@ -12,7 +12,7 @@ import Divider from "@mui/material/Divider";
 
 import { styled } from "@mui/material/styles";
 
-import { OrderConfirmForm } from "./OrderConfirmForm";
+
 
 import { auth } from "../src/firebase";
 import { getCartItems } from "../src/firebase/cart";
@@ -149,30 +149,7 @@ export function SingleProduct() {
       </div>
       {/* </div> */}
 
-      <SwipeableDrawer
-        anchor="right"
-        open={openConfirmOrder}
-        onClose={handleDrawerClose}
-        onOpen={handleDrawerOpen}
-      >
-        <Box
-          sx={{
-            width: {
-              xs: "100vw",
-              sm: "80vw",
-              lg: "35vw",
-            },
-          }}
-        >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronRightIcon />
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <OrderConfirmForm />
-        </Box>
-      </SwipeableDrawer>
+     
     </>
   );
 }
