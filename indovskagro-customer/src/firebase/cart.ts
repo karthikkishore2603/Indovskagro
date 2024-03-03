@@ -1,5 +1,13 @@
 import { db } from "./index";
-import { collection, addDoc, getDocs, where, query, deleteDoc} from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  where,
+  query,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 import Collections from "./collections.json";
 
@@ -46,9 +54,34 @@ export async function getCartItems(userId: string): Promise<Cart[]> {
 
 export async function removeCartItem(userId: string, productId: string) {
   const cartRef = collection(db, Collections.cart);
-  const q = query(cartRef, where("userId", "==", userId), where("productId", "==", productId));
+  const q = query(
+    cartRef,
+    where("userId", "==", userId),
+    where("productId", "==", productId)
+  );
   const docs = await getDocs(q);
   docs.forEach(async (doc) => {
     await deleteDoc(doc.ref);
   });
+}
+
+export async function updateCartItem(
+  userId: string,
+  productId: string,
+  quantity: number
+) {
+  const cartRef = collection(db, Collections.cart);
+  const q = query(
+    cartRef,
+    where("userId", "==", userId),
+    where("productId", "==", productId)
+  );
+  const docs = await getDocs(q);
+  docs.forEach(async (doc) => {
+    await updateDoc(doc.ref, {
+      quantity,
+    });
+  });
+
+  return;
 }
