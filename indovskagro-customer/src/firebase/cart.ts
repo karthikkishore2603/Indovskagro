@@ -7,12 +7,13 @@ import {
   query,
   deleteDoc,
   updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
 
 import Collections from "./collections.json";
 
 import { type Cart } from "../types";
-import { getProductById } from "./products";
+import { getProductById, getProducts } from "./products";
 
 export async function addToCart(
   userId: string,
@@ -84,4 +85,28 @@ export async function updateCartItem(
   });
 
   return;
+}
+
+export function onCartChange(
+  userId: string,
+  callback: (snapshot: Cart[]) => void
+) {
+  const products = getProducts().then((products) => {
+    const cartRef = collection(db, Collections.cart);
+    const q = query(cartRef, where("userId", "==", userId));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      console.log(querySnapshot);
+      callback(
+        querySnapshot.docs.map((doc) => {
+          const cart = doc.data() as Cart;
+          cart.product = products.find((p) => p.id === cart.productId);
+          return cart;
+        })
+      );
+    });
+
+    return unsubscribe;
+  });
+  return products;
 }

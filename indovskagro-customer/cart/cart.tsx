@@ -19,7 +19,7 @@ import { useTheme } from "@mui/material/styles";
 
 import { addToCart } from "../src/firebase/cart";
 import { getCartItems } from "../src/firebase/cart";
-import { removeCartItem } from "../src/firebase/cart";
+import { removeCartItem, onCartChange } from "../src/firebase/cart";
 
 import { Cart, Product } from "../src/types";
 import { HdrOffSelect } from "@mui/icons-material";
@@ -33,34 +33,34 @@ export function MediaControlCard({ cart }: { cart: Cart }) {
 
   return (
     <>
-    
-    <Card sx={{ display: "flex", marginBottom: "20px" }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: {
-            xs: "50vw",
-            sm: "45vw",
-            lg: "20vw",
-          },
-        }}
-      ><a href={`/product/index.html?id=${product.id}`}>
-        <CardContent sx={{ flex: "1 0 auto" }}>
-          <Typography component="div" variant="h5">
-            {product.title}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            color="text.secondary"
-            component="div"
-          >
-            {product.description}
-          </Typography>
-        </CardContent>
-        </a>
-        <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-          {/* <IconButton
+      <Card sx={{ display: "flex", marginBottom: "20px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: {
+              xs: "50vw",
+              sm: "45vw",
+              lg: "20vw",
+            },
+          }}
+        >
+          <a href={`/product/index.html?id=${product.id}`}>
+            <CardContent sx={{ flex: "1 0 auto" }}>
+              <Typography component="div" variant="h5">
+                {product.title}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                component="div"
+              >
+                {product.description}
+              </Typography>
+            </CardContent>
+          </a>
+          <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
+            {/* <IconButton
             onClick={() => {
               setValue(value - 1);
             }}
@@ -78,24 +78,24 @@ export function MediaControlCard({ cart }: { cart: Cart }) {
             <AddBoxIcon />
           </IconButton> */}
 
-          <IconButton
-            onClick={() => {
-              removeCartItem(cart.userId, cart.productId);
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
+            <IconButton
+              onClick={() => {
+                removeCartItem(cart.userId, cart.productId);
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Box>
         </Box>
-      </Box>
-      <a href={`/product/index.html?id=${product.id}`}>
-      <CardMedia
-        component="img"
-        sx={{ width: 151 }}
-        image={product.image}
-        alt="Live from space album cover"
-      /></a>
-    </Card>
-    
+        <a href={`/product/index.html?id=${product.id}`}>
+          <CardMedia
+            component="img"
+            sx={{ width: 151 }}
+            image={product.image}
+            alt="Live from space album cover"
+          />
+        </a>
+      </Card>
     </>
   );
 }
@@ -125,6 +125,19 @@ export const CartDisplay = () => {
     };
     a();
   }, [user]);
+
+  React.useEffect(() => {
+    if (!user) return;
+    const unsubscribe = onCartChange(user.uid, (cart) => {
+      console.log(cart);
+      setCartItems(cart);
+    });
+    return () => {
+      unsubscribe.then((unsub) => unsub());
+    };
+  }, [user]);
+
+  console.log({ cartItems });
 
   return (
     <Box
@@ -198,8 +211,7 @@ export const CartDisplay = () => {
                   }}
                   onClick={() => {
                     window.location.href = "/checkout/index.html";
-                  }
-                }
+                  }}
                 >
                   Check Out
                 </Button>
