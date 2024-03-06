@@ -70,13 +70,23 @@ export function BasicPopover() {
           horizontal: "left",
         }}
       >
-        <Button sx={{ p: 2 }}>My Account</Button>
+        <Button
+          sx={{ p: 2 }}
+          onClick={async () => {
+            window.location.href = "/myaccount/index.html";
+          }}
+        >
+          My Account
+        </Button>
         <br></br>
-        <Button 
-        sx={{ p: 2 }}
-        onClick={async () =>{
-          window.location.href = "/orderhistory/index.html";
-        }}>My Orders</Button>
+        <Button
+          sx={{ p: 2 }}
+          onClick={async () => {
+            window.location.href = "/orderhistory/index.html";
+          }}
+        >
+          My Orders
+        </Button>
         <br></br>
         <Button
           sx={{ p: 2 }}
@@ -101,8 +111,6 @@ export function LoginIcon() {
 }
 
 export function Cart() {
-  
-
   const [openConfirmOrder, setOpenConfirmOrder] = React.useState(false);
   const handleDrawerClose = () => {
     setOpenConfirmOrder(false);
@@ -117,7 +125,6 @@ export function Cart() {
       <div>
         <a
           className="position-relative me-4 my-auto "
-          
           onClick={(e) => {
             setOpenConfirmOrder(true);
           }}
