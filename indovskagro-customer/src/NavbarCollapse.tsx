@@ -72,6 +72,12 @@ export function BasicPopover() {
       >
         <Button sx={{ p: 2 }}>My Account</Button>
         <br></br>
+        <Button 
+        sx={{ p: 2 }}
+        onClick={async () =>{
+          window.location.href = "/orderhistory/index.html";
+        }}>My Orders</Button>
+        <br></br>
         <Button
           sx={{ p: 2 }}
           onClick={async () => {
