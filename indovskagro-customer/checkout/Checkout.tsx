@@ -8,7 +8,13 @@ import { IconButton, Typography } from "@mui/material";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import Box from "@mui/material/Box";
-import { removeCartItem, updateCartItem } from "../src/firebase/cart";
+import {
+  removeCartItem,
+  updateCartItem,
+  clearCart,
+} from "../src/firebase/cart";
+import { getUserByAuthId } from "../src/firebase/users";
+import { placeOrder } from "../src/firebase/orders";
 import { serialize } from "v8";
 
 export function DisplayCartItems({
@@ -180,7 +186,33 @@ export function Checkout() {
                   <h5 className="font-weight-bold">Total</h5>
                   <h5 className="font-weight-bold">{totalPrice}</h5>
                 </div>
-                <button className="btn btn-block btn-primary my-3 py-3">
+                <button
+                  className="btn btn-block btn-primary my-3 py-3"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    if (!user) {
+                      return;
+                    }
+                    try {
+                      const nUser = await getUserByAuthId(user.uid);
+                      const address = nUser.address;
+
+                      const res = await placeOrder(
+                        user.uid,
+                        cartItems,
+                        totalPrice,
+                        address
+                      );
+                      console.log(res);
+                      await clearCart(user.uid);
+
+                      alert("Order Placed");
+                      window.location.href = "/";
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  }}
+                >
                   Proceed To Checkout
                 </button>
               </div>

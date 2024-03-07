@@ -110,3 +110,13 @@ export function onCartChange(
   });
   return products;
 }
+
+// clear cart
+export async function clearCart(userId: string) {
+  const cartRef = collection(db, Collections.cart);
+  const q = query(cartRef, where("userId", "==", userId));
+  const docs = await getDocs(q);
+  docs.forEach(async (doc) => {
+    await deleteDoc(doc.ref);
+  });
+}

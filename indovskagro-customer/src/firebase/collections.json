@@ -2,5 +2,6 @@
     "products": "PRODUCTS",
     "productImageFolder": "product-images",
     "users": "USERS",
-    "cart": "CART"
+    "cart": "CART",
+    "orders": "ORDERS"
 }
