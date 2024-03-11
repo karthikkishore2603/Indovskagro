@@ -23,6 +23,15 @@ type Cart = {
   productId: string;
   quantity: number;
   product?: Product;
-}
+};
 
-export type { Product, User, Cart };
+type Order = {
+  userId: string;
+  cartItems: Cart[];
+  totalPrice: number;
+  deliveryAddress: string;
+  orderedDate: string;
+  status: string;
+};
+
+export type { Product, User, Cart, Order };

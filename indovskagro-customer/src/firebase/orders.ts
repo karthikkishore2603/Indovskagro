@@ -12,7 +12,7 @@ import {
 
 import Collections from "./collections.json";
 
-import { type Cart } from "../types";
+import { type Cart, type Order } from "../types";
 
 // orders structure
 // - userId
@@ -34,31 +34,19 @@ export async function placeOrder(
     totalPrice,
     deliveryAddress,
     orderedDate: new Date().toISOString(),
+    status: "Order placed",
   });
   console.log("Order placed");
 }
 
-export async function getOrdersByUserId(userId: string): Promise<Cart[]> {
+export async function getOrdersByUserId(userId: string): Promise<Order[]> {
   const orderRef = collection(db, Collections.orders);
   const q = query(orderRef, where("userId", "==", userId));
   const docs = await getDocs(q);
-  const ret: Cart[] = [];
+  const ret: Order[] = [];
 
   docs.forEach((doc) => {
-    const order = doc.data() as Cart;
-    ret.push(order);
-  });
-
-  return ret;
-}
-
-export async function getAllOrders(): Promise<Cart[]> {
-  const orderRef = collection(db, Collections.orders);
-  const docs = await getDocs(orderRef);
-  const ret: Cart[] = [];
-
-  docs.forEach((doc) => {
-    const order = doc.data() as Cart;
+    const order = doc.data() as Order;
     ret.push(order);
   });
 
