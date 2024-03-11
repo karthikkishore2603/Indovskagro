@@ -46,7 +46,7 @@ export async function getOrdersByUserId(userId: string): Promise<Order[]> {
   const ret: Order[] = [];
 
   docs.forEach((doc) => {
-    const order = doc.data() as Order;
+    const order = { ...doc.data(), id: doc.id } as Order;
     ret.push(order);
   });
 

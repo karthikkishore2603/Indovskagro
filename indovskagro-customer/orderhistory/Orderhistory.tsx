@@ -9,6 +9,12 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 
+import { auth } from "../src/firebase";
+import { getOrdersByUserId } from "../src/firebase/orders";
+import { type Order } from "../src/types";
+
+import { useAuthState } from "react-firebase-hooks/auth";
+
 const steps = [
   "Order placed",
   "Order confirmed",
@@ -17,13 +23,12 @@ const steps = [
   "Delivered",
 ];
 
-export function Orderhistory() {
+function OrderDisplay({ order }: { order: Order }) {
   return (
     <>
       <Card
         sx={{
           marginBottom: "20px",
-
           marginLeft: {
             xs: "23px",
             sm: "45px",
@@ -45,24 +50,31 @@ export function Orderhistory() {
               justifyContent: "space-between",
             }}
           >
-            Order ID: 123456
+            Order ID: {order.id}
             <Typography variant="h5" component="div">
-              Order Date: 12/12/2021
+              Order Date: {new Date(order.orderedDate).toLocaleDateString()}
             </Typography>
           </Typography>
 
           <Typography variant="h5" color="text.secondary" component="div">
-            Quantity: 2
+            Number of items: {order.cartItems.length}
           </Typography>
           <Typography variant="h5" color="text.secondary" component="div">
-            Total Amount: 2000
+            Total Amount: {order.totalPrice}
           </Typography>
           <Typography variant="h5" color="text.secondary" component="div">
-            Delivery Address: 123, ABC, XYZ
+            Delivery Address: {order.deliveryAddress}
           </Typography>
 
           <Box sx={{ width: "100%" }}>
-            <Stepper activeStep={1} alternativeLabel>
+            <Stepper
+              activeStep={
+                steps.indexOf(order.status) === -1
+                  ? 0
+                  : steps.indexOf(order.status)
+              }
+              alternativeLabel
+            >
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
@@ -72,6 +84,39 @@ export function Orderhistory() {
           </Box>
         </CardContent>
       </Card>
+    </>
+  );
+}
+
+export function OrdersHistory() {
+  const [orders, setOrders] = React.useState<Order[]>([]);
+  const [user, loading, error] = useAuthState(auth);
+
+  React.useEffect(() => {
+    const a = async () => {
+      if (user) {
+        const data = await getOrdersByUserId(user.uid);
+        setOrders(data);
+      }
+    };
+    a();
+  }, [user]);
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+  if (error) {
+    return <h1>Some unknown error occurred. Contact support.</h1>;
+  }
+  if (!user) {
+    return <h2>Please login to view your orders</h2>;
+  }
+
+  return (
+    <>
+      {orders.map((order) => {
+        return <OrderDisplay order={order} />;
+      })}
     </>
   );
 }
