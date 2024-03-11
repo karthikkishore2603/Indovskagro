@@ -13,6 +13,27 @@ import {
 import Collections from "./collections.json";
 
 import { type Cart, type Order } from "../types";
+import { generateRandomOrderId } from "../utils";
+
+async function genOrderId() {
+  // use generateRandomOrderId function to generate a random order id
+  // if the generated order id already exists, then generate a new one
+  // return the generated order id
+  const orderRef = collection(db, Collections.orders);
+  let orderId = generateRandomOrderId();
+
+  // check if the orderId already exists
+  const q = query(orderRef, where("orderId", "==", orderId));
+  let docs = await getDocs(q);
+
+  while (docs.size > 0) {
+    orderId = generateRandomOrderId();
+    const q = query(orderRef, where("orderId", "==", orderId));
+    docs = await getDocs(q);
+  }
+
+  return orderId;
+}
 
 // orders structure
 // - userId
@@ -27,8 +48,11 @@ export async function placeOrder(
   totalPrice: number,
   deliveryAddress: string
 ) {
+  const orderId = await genOrderId();
+
   const orderRef = collection(db, Collections.orders);
   await addDoc(orderRef, {
+    orderId,
     userId,
     cartItems,
     totalPrice,
@@ -46,7 +70,7 @@ export async function getOrdersByUserId(userId: string): Promise<Order[]> {
   const ret: Order[] = [];
 
   docs.forEach((doc) => {
-    const order = { ...doc.data(), id: doc.id } as Order;
+    const order = { ...doc.data() } as Order;
     ret.push(order);
   });
 

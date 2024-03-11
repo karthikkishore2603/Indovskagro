@@ -50,7 +50,7 @@ function OrderDisplay({ order }: { order: Order }) {
               justifyContent: "space-between",
             }}
           >
-            Order ID: {order.id}
+            Order ID: {order.orderId}
             <Typography variant="h5" component="div">
               Order Date: {new Date(order.orderedDate).toLocaleDateString()}
             </Typography>
@@ -117,6 +117,7 @@ export function OrdersHistory() {
       {orders.map((order) => {
         return <OrderDisplay order={order} />;
       })}
+      {orders.length === 0 && <h2>No orders found</h2>}
     </>
   );
 }

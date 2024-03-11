@@ -26,7 +26,7 @@ type Cart = {
 };
 
 type Order = {
-  id: string;
+  orderId: string;
   userId: string;
   cartItems: Cart[];
   totalPrice: number;
