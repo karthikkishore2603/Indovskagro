@@ -9,15 +9,16 @@ import {
   addDoc,
   where,
   query,
+  updateDoc
 } from "firebase/firestore";
 
 import Collections from "./collections.json";
 
-export async function getUserById(userId: string) {
+export async function getUserById(userId: string): Promise<User | null> {
   const doc1 = await getDoc(doc(db, Collections.users, userId));
 
   if (doc1.exists()) {
-    return doc1.data();
+    return doc1.data() as User;
   } else {
     return null;
   }
@@ -31,7 +32,12 @@ export async function getUserByAuthId(authId: string): Promise<User> {
 
   docs.forEach((doc) => {
     const user = doc.data() as User;
-    ret.push(user);
+    ret.push(
+      {
+        id: doc.id,
+        ...user,
+      }
+    );
   });
 
   return ret[0];
@@ -55,4 +61,10 @@ export async function registerUser({
   });
 
   return docRef.id;
+}
+
+// update user details
+export async function updateUserDetails(userId: string, data: Partial<User>) {
+  const userRef = doc(db, Collections.users, userId);
+  await updateDoc(userRef, data);
 }
