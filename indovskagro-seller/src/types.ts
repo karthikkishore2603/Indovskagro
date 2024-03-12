@@ -9,4 +9,34 @@ type Product = {
   category: string;
 };
 
-export type { Product };
+type Cart = {
+  userId: string;
+  productId: string;
+  quantity: number;
+  product?: Product;
+};
+
+type Order = {
+  orderId: string;
+  userId: string;
+  cartItems: Cart[];
+  totalPrice: number;
+  deliveryAddress: string;
+  orderedDate: string;
+  status: string;
+};
+
+type User = {
+  address: string;
+  authId: string;
+  email: string;
+  fname: string;
+  lname: string;
+  phoneNo: string;
+};
+
+interface OrderWithUser extends Order {
+  user: User;
+}
+
+export type { Product, Cart, Order, User, OrderWithUser };

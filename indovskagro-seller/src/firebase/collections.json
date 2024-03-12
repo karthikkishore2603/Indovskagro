@@ -1,4 +1,6 @@
 {
     "products": "PRODUCTS",
-    "productImageFolder": "product-images"
+    "productImageFolder": "product-images",
+    "orders": "ORDERS",
+    "users": "USERS"
 }
