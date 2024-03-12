@@ -22,9 +22,21 @@ export async function getOrders(): Promise<OrderWithUser[]> {
       return {
         user: user,
         orderId: doc.id,
+        id: doc.id,
         ...doc.data(),
       };
     })
   ) as any;
   return orders;
+}
+
+// update order status
+export async function updateOrderStatus(
+  orderId: string,
+  status: string
+): Promise<void> {
+  const orderRef = doc(db, Collections.orders, orderId);
+  await updateDoc(orderRef, {
+    status,
+  });
 }

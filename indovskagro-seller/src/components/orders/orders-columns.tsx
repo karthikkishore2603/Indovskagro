@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Order, OrderWithUser, User } from "@/types";
 import { Button } from "../ui/button";
@@ -34,6 +35,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { updateOrderStatus } from "@/firebase/orders";
+
+const steps = [
+  "Order placed",
+  "Order confirmed",
+  "Order dispatched",
+  "In transit",
+  "Delivered",
+];
 
 export const orderColumns: ColumnDef<OrderWithUser>[] = [
   {
@@ -53,6 +70,10 @@ export const orderColumns: ColumnDef<OrderWithUser>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const date = new Date(row.original.orderedDate);
+      return <div className="text-center">{date.toLocaleDateString()}</div>;
+    },
   },
   {
     accessorKey: "deliveryAddress",
@@ -60,7 +81,18 @@ export const orderColumns: ColumnDef<OrderWithUser>[] = [
   },
   {
     accessorKey: "totalPrice",
-    header: () => <div className="text-right">Total Price</div>,
+    // header: () => <div className="text-right">Total Price</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Total Price
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("totalPrice"));
       const formatted = new Intl.NumberFormat("en-IN", {
@@ -68,12 +100,45 @@ export const orderColumns: ColumnDef<OrderWithUser>[] = [
         currency: "INR",
       }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="text-center font-medium">{formatted}</div>;
     },
   },
   {
     accessorKey: "status",
     header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status;
+      const [loading, setLoading] = React.useState(false);
+      const [deliveryStatus, setDeliveryStatus] = React.useState(status);
+
+      return (
+        <Select
+          defaultValue={deliveryStatus}
+          onValueChange={async (a) => {
+            setDeliveryStatus(a);
+            try {
+              setLoading(true);
+              await updateOrderStatus(row.original.id, a);
+            } catch (error) {
+              console.error("Error updating order status", error);
+            }
+            setLoading(false);
+          }}
+          disabled={loading}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Delivery Status" />
+          </SelectTrigger>
+          <SelectContent>
+            {steps.map((step, index) => (
+              <SelectItem key={index} value={step}>
+                {step}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      );
+    },
   },
   {
     id: "user",
@@ -123,15 +188,15 @@ export const orderColumns: ColumnDef<OrderWithUser>[] = [
         <Drawer>
           <DrawerTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">View Info</span>
+              <span className="sr-only">View Order Items</span>
               <InfoIcon className="h-4 w-4" />
             </Button>
           </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>
-              <DrawerTitle>Order Details</DrawerTitle>
+              <DrawerTitle>Order Items</DrawerTitle>
               <DrawerDescription>
-                <div className="flex justify-between items-center">
+                {/* <div className="flex justify-between items-center">
                   <h3 className="font-semibold">
                     Order Id: {orderDetails.orderId}
                   </h3>
@@ -141,7 +206,8 @@ export const orderColumns: ColumnDef<OrderWithUser>[] = [
                       {new Date(orderDetails.orderedDate).toLocaleDateString()}
                     </span>
                   </div>
-                </div>
+                </div> */}
+                The order items in the order.
               </DrawerDescription>
               <div>
                 <Table>
