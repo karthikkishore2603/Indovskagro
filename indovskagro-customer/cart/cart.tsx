@@ -114,6 +114,15 @@ export const CartDisplay = () => {
     "phone"
   );
 
+  const emptycart = () => {
+    if (cartItems.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
   React.useEffect(() => {
     const a = async () => {
       if (user) {
@@ -137,8 +146,6 @@ export const CartDisplay = () => {
     };
   }, [user]);
 
-  console.log({ cartItems });
-
   return (
     <Box
       sx={{
@@ -157,7 +164,7 @@ export const CartDisplay = () => {
         },
       }}
     >
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h6" component="h6" gutterBottom>
         Cart
       </Typography>
 
@@ -189,6 +196,15 @@ export const CartDisplay = () => {
               </FormContainer>
             </>
           )}
+
+          {emptycart() && (
+            <>
+              <Typography variant="h4" component="h1" gutterBottom>
+                Cart is Empty
+              </Typography>
+            </>
+          )}
+
           {user && (
             <>
               <FormContainer

@@ -63,7 +63,6 @@ export function ProductComponent({ product }: { product: Product }) {
     setOpenAlready(false);
     setOpenLogin(false);
   };
-  
 
   const action = (
     <React.Fragment>
@@ -139,7 +138,7 @@ export function ProductComponent({ product }: { product: Product }) {
                   } else {
                     await addtocart({ product, setOpen });
                     console.log("Added to cart");
-                    
+
                     <></>;
                   }
                 }}

@@ -12,11 +12,11 @@ import Divider from "@mui/material/Divider";
 
 import { styled } from "@mui/material/styles";
 
-
-
 import { auth } from "../src/firebase";
 import { getCartItems } from "../src/firebase/cart";
 import { addToCart } from "../src/firebase/cart";
+import CloseIcon from "@mui/icons-material/Close";
+import Snackbar from "@mui/material/Snackbar";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -32,6 +32,27 @@ export function SingleProduct() {
   const user = auth.currentUser;
   const [quantity, setQuantity] = React.useState<number>(0);
   const [openConfirmOrder, setOpenConfirmOrder] = React.useState(false);
+
+  const [openadded, setOpenadded] = React.useState(false);
+  const [openAlready, setOpenAlready] = React.useState(false);
+
+  const handleClose = () => {
+    setOpenadded(false);
+    setOpenAlready(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   React.useEffect(() => {
     // get productId from URLQuery,  ?id=
@@ -108,13 +129,15 @@ export function SingleProduct() {
                       cartItems.some((item) => item.productId === productId)
                     ) {
                       console.log("Already in to cart");
+                      setOpenAlready(true);
                     } else {
                       await addToCart(user?.uid!, productId!, 1);
                       console.log("Added to cart");
+                      setOpenadded(true);
                     }
                   }}
                 >
-                  <i className="fas fa-shopping-cart"></i> Buy
+                  <i className="fas fa-shopping-cart"></i> Add to Cart
                 </a>
                 <p>
                   <strong>Category: </strong> {data.category}
@@ -148,8 +171,21 @@ export function SingleProduct() {
         </div>
       </div>
       {/* </div> */}
+      <Snackbar
+        open={openadded}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        message="Added to Cart"
+        action={action}
+      />
 
-     
+      <Snackbar
+        open={openAlready}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        message="Already in Cart"
+        action={action}
+      />
     </>
   );
 }
