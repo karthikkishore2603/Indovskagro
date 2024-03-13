@@ -143,10 +143,11 @@
       rgba(248, 223, 173, 0.1),
       rgba(248, 223, 173, 0.1)
     ),
-    url(../assets/hero-img.jpg);
+    url(../assets/img/output-onlinepngt.png);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  opacity: 0.9;
 }
 
 .carousel-item {
