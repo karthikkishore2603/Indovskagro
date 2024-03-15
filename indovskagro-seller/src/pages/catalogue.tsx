@@ -34,7 +34,7 @@ export default function Catalogue() {
         console.log("yes");
         setDefaultValues(product);
         setIsDialogOpen(true);
-      }),
+      }, setSubmitCount),
     [isDialogOpen, setDefaultValues, setIsDialogOpen]
   );
 

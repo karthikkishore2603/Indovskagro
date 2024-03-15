@@ -14,9 +14,11 @@ import {
 import { toast } from "sonner";
 
 import type { Product } from "@/types";
+import { deleteProduct } from "@/firebase/products";
 
 export function getColumns(
-  openEditDialog: (product: Product) => void
+  openEditDialog: (product: Product) => void,
+  setSubmitCount: React.Dispatch<React.SetStateAction<number>>
 ): ColumnDef<Product>[] {
   return [
     {
@@ -161,6 +163,16 @@ export function getColumns(
               >
                 Edit
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={async () => {
+                  if (!product.id) return;
+                  console.log("Delete Product");
+                  await deleteProduct(product.id);
+                  setSubmitCount((prev: number) => prev + 1);
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -168,16 +180,3 @@ export function getColumns(
     },
   ];
 }
-
-export const products: Product[] = [
-  {
-    id: "1",
-    title: "Product 1",
-    description: "Product 1 description",
-    mrp: 100,
-    price: 90,
-    stock: 100,
-    image: "https://via.placeholder.com/150",
-  },
-  // ...
-];
