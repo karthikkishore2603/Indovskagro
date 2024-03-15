@@ -24,6 +24,8 @@ import { removeCartItem, onCartChange } from "../src/firebase/cart";
 import { Cart, Product } from "../src/types";
 import { HdrOffSelect } from "@mui/icons-material";
 
+import  sendWhastappMessage  from '../';
+
 export function MediaControlCard({ cart }: { cart: Cart }) {
   const theme = useTheme();
   const [value, setValue] = React.useState<number>(cart.quantity);
@@ -218,6 +220,8 @@ export const CartDisplay = () => {
                   return <MediaControlCard cart={cart} />;
                 })}
 
+                
+
                 <Button
                   type="submit"
                   variant="contained"
@@ -227,6 +231,7 @@ export const CartDisplay = () => {
                   }}
                   onClick={() => {
                     window.location.href = "/checkout/index.html";
+                    sendWhastappMessage();
                   }}
                 >
                   Check Out
