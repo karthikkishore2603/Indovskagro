@@ -7,6 +7,7 @@ import {
   getDocs,
   updateDoc,
   doc,
+  deleteDoc,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -63,4 +64,9 @@ export async function updateProduct(id: string, product: Product) {
     ...product,
     image: imageUrl,
   });
+}
+
+export async function deleteProduct(id: string) {
+  const docRef = doc(collection(db, Collections.products), id);
+  await deleteDoc(docRef);
 }
