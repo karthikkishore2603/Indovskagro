@@ -46,7 +46,8 @@ export async function placeOrder(
   userId: string,
   cartItems: Cart[],
   totalPrice: number,
-  deliveryAddress: string
+  deliveryAddress: string,
+  screenshotUrl: string
 ) {
   const orderId = await genOrderId();
 
@@ -59,6 +60,7 @@ export async function placeOrder(
     deliveryAddress,
     orderedDate: new Date().toISOString(),
     status: "Order placed",
+    screenshotUrl,
   });
   console.log("Order placed");
 }

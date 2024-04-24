@@ -25,6 +25,7 @@ type Order = {
   deliveryAddress: string;
   orderedDate: string;
   status: string;
+  screenshotUrl?: string;
 };
 
 type User = {
