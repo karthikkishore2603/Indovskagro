@@ -5,9 +5,9 @@ import {
   getDocs,
   where,
   query,
-  deleteDoc,
-  updateDoc,
-  onSnapshot,
+  // deleteDoc,
+  // updateDoc,
+  // onSnapshot,
 } from "firebase/firestore";
 
 import Collections from "./collections.json";

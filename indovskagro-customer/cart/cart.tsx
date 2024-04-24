@@ -1,5 +1,5 @@
 import React from "react";
-import { FormContainer, TextFieldElement } from "react-hook-form-mui";
+import { FormContainer} from "react-hook-form-mui";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
@@ -11,24 +11,24 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
+// import AddBoxIcon from "@mui/icons-material/AddBox";
+// import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useTheme } from "@mui/material/styles";
+// import { useTheme } from "@mui/material/styles";
 
-import { addToCart } from "../src/firebase/cart";
+// import { addToCart } from "../src/firebase/cart";
 import { getCartItems } from "../src/firebase/cart";
 import { removeCartItem, onCartChange } from "../src/firebase/cart";
 
-import { Cart, Product } from "../src/types";
-import { HdrOffSelect } from "@mui/icons-material";
+import { Cart } from "../src/types";
+// import { HdrOffSelect } from "@mui/icons-material";
 
-import  sendWhastappMessage  from '../';
+// import  sendWhastappMessage  from '../whatsappmessage/sendmsg';
 
 export function MediaControlCard({ cart }: { cart: Cart }) {
-  const theme = useTheme();
-  const [value, setValue] = React.useState<number>(cart.quantity);
+  // const theme = useTheme();
+  // const [value, setValue] = React.useState<number>(cart.quantity);
   const product = cart.product;
 
   if (!product) return;
@@ -103,7 +103,8 @@ export function MediaControlCard({ cart }: { cart: Cart }) {
 }
 
 export const CartDisplay = () => {
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [anchorEl, setAnchorEl] = React.useState<HTMLAnchorElement | null>(
     null
   );
@@ -231,7 +232,7 @@ export const CartDisplay = () => {
                   }}
                   onClick={() => {
                     window.location.href = "/checkout/index.html";
-                    sendWhastappMessage();
+                    
                   }}
                 >
                   Check Out

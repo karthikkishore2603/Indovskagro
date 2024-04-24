@@ -125,7 +125,7 @@ export function Cart() {
       <div>
         <a
           className="position-relative me-4 my-auto "
-          onClick={(e) => {
+          onClick={() => {
             setOpenConfirmOrder(true);
           }}
         >
@@ -161,15 +161,15 @@ export function Cart() {
   );
 }
 export default function NavbarCollapse() {
-  const [openLogin, setOpenLogin] = React.useState(false);
+  // const [openLogin, setOpenLogin] = React.useState(false);
 
-  const handleClickOpenLogin = () => {
-    setOpenLogin(true);
-  };
+  // const handleClickOpenLogin = () => {
+  //   setOpenLogin(true);
+  // };
 
-  const handleCloseLogin = () => {
-    setOpenLogin(false);
-  };
+  // const handleCloseLogin = () => {
+  //   setOpenLogin(false);
+  // };
 
   return (
     <>

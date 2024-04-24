@@ -4,13 +4,13 @@ import { addToCart } from "../firebase/cart";
 import { getCartItems } from "../firebase/cart";
 
 import React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
-import { useEffect } from "react";
-import { DialerSip } from "@mui/icons-material";
-import { set } from "firebase/database";
+// import Button from "@mui/material/Button";
+// import Dialog from "@mui/material/Dialog";
+// import DialogActions from "@mui/material/DialogActions";
+// import DialogTitle from "@mui/material/DialogTitle";
+// import { useEffect } from "react";
+// import { DialerSip } from "@mui/icons-material";
+// import { set } from "firebase/database";
 
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
@@ -35,22 +35,23 @@ export async function addtocart({
   console.log(userId);
 
   //selectornnn
-  const [openalert, setOpenalert] = React.useState(false);
 
-  const handleClick = () => {
-    setOpenalert(true);
-  };
+  // const [openalert, setOpenalert] = React.useState(false);
 
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
+  // const handleClick = () => {
+  //   setOpenalert(true);
+  // };
 
-    setOpenalert(false);
-  };
+  // const handleClose = (
+  //   event: React.SyntheticEvent | Event,
+  //   reason?: string
+  // ) => {
+  //   if (reason === "clickaway") {
+  //     return;
+  //   }
+
+  //   setOpenalert(false);
+  // };
 }
 
 export function ProductComponent({ product }: { product: Product }) {

@@ -6,6 +6,10 @@ import { getProducts } from "./firebase/products";
 
 import type { Product } from "./types";
 
+// import { Button } from "@mui/material";
+
+
+
 export default function ProductsShop() {
   // key is string and the value is product
   const [groups, setGroups] = React.useState<Record<string, Product[]>>({});
