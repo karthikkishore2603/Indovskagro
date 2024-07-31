@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Cart, Product } from "../src/types";
+import { Cart } from "../src/types";
 import { getCartItems } from "../src/firebase/cart";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../src/firebase";
@@ -23,6 +23,8 @@ import { DialogContent } from "@mui/material";
 import { DialogContentText } from "@mui/material";
 import { text } from "stream/consumers";
 import SendWhatsappMessage from "../whatsappmessage/sendmsg";
+import { UploadScreenshot } from "./UploadScreenshot";
+
 export function DisplayCartItems({
   cart,
   setCartItems,
@@ -112,6 +114,7 @@ export function DisplayCartItems({
 export function Checkout() {
   const [cartItems, setCartItems] = React.useState<Cart[]>([]);
   const [user, loading, error] = useAuthState(auth);
+  const [screenshotUrl, setScreenshotUrl] = React.useState<string>("");
 
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -180,9 +183,12 @@ export function Checkout() {
                 <p>IFSC Code: CNRB0007485</p>
                 <p>Branch: Bangalore</p>
               </div>
+              <UploadScreenshot
+                screenshotUrl={screenshotUrl}
+                setScreenshotUrl={setScreenshotUrl}
+              />
             </div>
           </div>
-
           <div className="col-lg-4">
             <div className="card border-secondary mb-5">
               <div className="card-header bg-secondary border-0">
@@ -247,6 +253,12 @@ export function Checkout() {
             if (!user) {
               return;
             }
+
+            if (screenshotUrl === "") {
+              alert("Please upload the payment proof");
+              return;
+            }
+
             try {
               const nUser = await getUserByAuthId(user.uid);
               const address = nUser.address;
@@ -255,7 +267,8 @@ export function Checkout() {
                 user.uid,
                 cartItems,
                 totalPrice,
-                address
+                address,
+                screenshotUrl
               );
               const fname = nUser.fname;
               const phoneno = nUser.phoneNo;
@@ -263,7 +276,7 @@ export function Checkout() {
               await clearCart(user.uid);
               SendWhatsappMessage(fname, phoneno, orderID);
               console.log("Order placed", "msg sent  to whatsapp");
-              // window.location.href = "/";
+              window.location.href = "/";
             } catch (e) {
               console.error(e);
             }

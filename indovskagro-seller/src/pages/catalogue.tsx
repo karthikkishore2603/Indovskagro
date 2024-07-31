@@ -4,7 +4,7 @@ import { Layout } from "@/components/layout";
 import { Heading1 } from "@/components/typography/headings";
 
 import { DataTable } from "@/components/catalogue/products-table";
-import { getColumns, products } from "@/components/catalogue/products-columns";
+import { getColumns } from "@/components/catalogue/products-columns";
 import { ProductFormDialog } from "@/components/catalogue/product-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 

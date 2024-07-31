@@ -122,9 +122,13 @@ export function Cart() {
 
   return (
     <>
-      <div>
+      <Box
+        sx={{
+          cursor: "pointer",
+        }}
+      >
         <a
-          className="position-relative me-4 my-auto "
+          className="position-relative me-4 my-auto"
           onClick={() => {
             setOpenConfirmOrder(true);
           }}
@@ -156,7 +160,7 @@ export function Cart() {
             <CartDisplay />
           </Box>
         </SwipeableDrawer>
-      </div>
+      </Box>
     </>
   );
 }

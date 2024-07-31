@@ -3,5 +3,6 @@
     "productImageFolder": "product-images",
     "users": "USERS",
     "cart": "CART",
-    "orders": "ORDERS"
+    "orders": "ORDERS",
+    "screenshotFolder": "user-screenshots"
 }

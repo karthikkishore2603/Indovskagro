@@ -209,6 +209,16 @@ export const orderColumns: ColumnDef<OrderWithUser>[] = [
                 </div> */}
                 The order items in the order.
               </DrawerDescription>
+              {orderDetails.screenshotUrl && (
+                <Button
+                  variant={"outline"}
+                  onClick={() =>
+                    window.open(orderDetails.screenshotUrl, "_blank")
+                  }
+                >
+                  View Payment Proof
+                </Button>
+              )}
               <div>
                 <Table>
                   <TableHeader>
@@ -222,7 +232,7 @@ export const orderColumns: ColumnDef<OrderWithUser>[] = [
                   <TableBody>
                     {orderDetails.cartItems.map((cart, index) => {
                       return (
-                        <TableRow>
+                        <TableRow key={index}>
                           <TableCell className="font-medium">
                             {cart.product?.title}
                           </TableCell>
