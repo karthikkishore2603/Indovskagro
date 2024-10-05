@@ -4,6 +4,7 @@ import {
   registerWithEmailAndPassword,
   sendVerificationEmail,
 } from "../src/firebase/auth";
+import registerImage from "./assests/images/registration-form-1.jpg";
 import { registerUser } from "../src/firebase/users";
 
 function InitialForm({
@@ -200,7 +201,7 @@ export function RegisterForm() {
   return (
     <>
       <div className="image-holder">
-        <img src="./assests/images/registration-form-1.jpg" alt="" />
+        <img src={registerImage} alt="" />
       </div>
       {
         {

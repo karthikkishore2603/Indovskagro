@@ -10,7 +10,6 @@ ReactDOM.createRoot(document.getElementById("navbar-cart")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <NavbarCollapse />
-      
     </QueryClientProvider>
   </React.StrictMode>
 );
